@@ -1,0 +1,1637 @@
+Practical 1
+
+Database - cs ds
+
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+class student  // define class
+{
+    
+    int roll, cla;  // class private variable
+    char Div;
+    string name, blood, add;
+    static int id;
+    long long int tel;
+
+public:
+    
+    void getdata();  // function declaration
+    void display();  // function declaration
+    
+    student()  // default constructor
+    {
+        name = "Tejas";
+        roll = 25;
+        cla = 2;
+        Div = 'B';
+        blood = "B+";
+        tel = 8796612190;
+        add = "dighi";
+    }
+    
+    student(student &i)  // copy constructor
+    {
+        name = i.name;
+        roll = i.roll;
+        cla = i.cla;
+        Div = i.Div;
+        blood = i.blood;
+        tel = i.tel;
+        add = i.add;
+    }
+    
+    ~student()  // destructor
+    {
+        cout << "Memory deleted";
+    }
+
+    static int showid()  //static function
+    {
+        id++;
+        cout << id;
+        return id;
+    }
+};
+
+class personinfo
+{
+    char sub[10];
+    friend class student;  //  friend class
+};
+
+void student::getdata() // function defination
+{
+    personinfo p;
+    cout << "Enter the Name - ";
+    cin >> name;
+    cout << "Enter the roll no - ";
+    cin >> roll;
+    cout << "Enter the class - ";
+    cin >> cla;
+    B:
+    cout << "Enter the division - ";
+    cin >> Div;
+    try{
+        if(isdigit(Div)==true){
+            throw Div;
+        }
+    }
+    catch(char Div){
+        cout<<"Exception caught...!!!\n";
+        goto B;
+    }
+    cout << "Enter the blood group - ";
+    cin >> blood;
+    cout << "Enter the address - ";
+    cin >> add;
+    cout << "Enter the telephone no. - ";
+    cin >> tel;
+    cout << "enter the subject - ";
+    cin >> p.sub;
+}
+void student::display()
+{
+    cout << "Name - " << name << "\n";
+    cout << "Roll  No - " << roll << "\n";
+    cout << "class is - " << cla << "\n";
+    cout << "Division is - " << Div << "\n";
+    cout << "Blood Group - " << blood << "\n";
+    cout << "Adress - " << add << "\n";
+    cout << "Phone no - " << tel << "\n";
+}
+
+int student::id;
+
+int main()
+{
+    int n;
+
+    cout << "Enter the no of student - ";
+    cin >> n;
+
+    student *s = new student[n]; // dynamic memory allocation
+    student t;                   // class object
+    for (int i = 0; i < n; i++)
+    {
+        cout << "Database of student - ";
+        student::showid();
+        cout << "\n";
+        s[i].getdata();
+        s[i].display();
+    }
+    t.getdata();
+    student s1(t);
+    s1.display();
+    delete s;//delete memory
+}
+
+// int main() 
+// {
+//     student s,*s2;
+//     s2=new student;
+//     cout<<"Dtabase of student - ";
+//     s.show();
+//     cout<<"\n";
+//     s.getdata();
+//     s.display();
+//     //copy constructor
+//     student s1(s);
+//     //dynamic memory allocation
+//     s2->getdata();
+//     s2->display();
+//     delete s2;
+    
+
+// }
+
+
+
+Practical 2 
+
+
+Cs
+
+
+#include <iostream>
+#include <string>
+#include <exception>  // For exception handling
+using namespace std;
+
+class Student {
+private:
+    string name;
+    int roll_no;
+    string class_name;
+    string division;
+    string dob;
+    string blood_group;
+    string contact_address;
+    string telephone_no;
+    string driving_license_no;
+
+    static int student_count; // Static member to count students
+
+public:
+    // Default constructor
+    Student() {
+        name = "";
+        roll_no = 0;
+        class_name = "";
+        division = "";
+        dob = "";
+        blood_group = "";
+        contact_address = "";
+        telephone_no = "";
+        driving_license_no = "";
+        student_count++;
+    }
+
+    // Parameterized constructor
+    Student(string n, int r, string c, string d, string dob, string bg,
+            string addr, string tel, string dl) {
+        name = n;
+        roll_no = r;
+        class_name = c;
+        division = d;
+        this->dob = dob; // Using 'this' pointer to avoid ambiguity
+        blood_group = bg;
+        contact_address = addr;
+        telephone_no = tel;
+        driving_license_no = dl;
+        student_count++;
+    }
+
+    // Copy constructor
+    Student(const Student& s) {
+        name = s.name;
+        roll_no = s.roll_no;
+        class_name = s.class_name;
+        division = s.division;
+        dob = s.dob;
+        blood_group = s.blood_group;
+        contact_address = s.contact_address;
+        telephone_no = s.telephone_no;
+        driving_license_no = s.driving_license_no;
+        student_count++;
+    }
+
+    // Destructor
+    ~Student() {
+        student_count--;
+        cout << "Destructor called for student " << name << endl;
+    }
+
+    // Static member function to get the count of students
+    static void print_student_count() {
+        cout << "Total Students: " << student_count << endl;
+    }
+
+    // Friend class to access private members of the Student class
+    friend class Admin;
+
+    // Inline function to display student info
+    inline void display() const {
+        cout << "\nStudent Details:\n";
+        cout << "Name: " << name << endl;
+        cout << "Roll No: " << roll_no << endl;
+        cout << "Class: " << class_name << endl;
+        cout << "Division: " << division << endl;
+        cout << "Date of Birth: " << dob << endl;
+        cout << "Blood Group: " << blood_group << endl;
+        cout << "Contact Address: " << contact_address << endl;
+        cout << "Telephone No: " << telephone_no << endl;
+        cout << "Driving License No: " << driving_license_no << endl;
+    }
+
+    // Method to input student details
+    void input_data() {
+        cout << "Enter Name: ";
+        cin >> name;
+        cout << "Enter Roll No: ";
+        cin >> roll_no;
+        cout << "Enter Class: ";
+        cin >> class_name;
+        cout << "Enter Division: ";
+        cin >> division;
+        cout << "Enter Date of Birth (DD/MM/YYYY): ";
+        cin >> dob;
+        cout << "Enter Blood Group: ";
+        cin >> blood_group;
+        cout << "Enter Contact Address: ";
+        cin >> contact_address;
+        cout << "Enter Telephone No: ";
+        cin >> telephone_no;
+        cout << "Enter Driving License No: ";
+        cin >> driving_license_no;
+    }
+};
+
+// Initialize static member variable
+int Student::student_count = 0;
+
+// Friend class to manage student data
+class Admin {
+public:
+    void display_student_info(Student& s) {
+        s.display();
+    }
+
+    // Method to print student count
+    void print_student_count() {
+        Student::print_student_count();
+    }
+};
+
+int main() {
+    try {
+        // Dynamic memory allocation for students
+        Student* students = new Student[2];  // Allocate memory for 3 students
+
+        // Input data for students
+        for (int i = 0; i <2; i++) {
+            cout << "\nEnter details for student " << (i + 1) << ":\n";
+            students[i].input_data();
+        }
+
+        // Create Admin object to manage and display student data
+        Admin admin;
+
+        // Display student information using the friend class
+        for (int i = 0; i < 2; i++) {
+            admin.display_student_info(students[i]);
+        }
+
+        // Display the total student count
+        admin.print_student_count();
+
+        // Deallocate memory
+        delete[] students; // Free the allocated memory
+
+    } catch (...) {
+        cout << "An error occurred!" << endl; // Generic error message
+    }
+
+    return 0;
+}
+
+
+Practical 3
+
+
+Operator overloading
+
+
+#include <iostream>
+using namespace std;
+
+class complex{   // class define
+    float real,img;
+    public:
+    complex(){  // default contructor
+        real=0.0;
+        img=0.0;
+    }
+    complex(int x,int y){  //  parameterised constructor
+        real=x;
+        img=y;
+    }
+    void display(){
+    	cout<<"\n"<<real<<"+i"<<img<<endl;
+    }
+    complex operator +(complex z){    // operator overloading
+    	complex temp;
+    	temp.real=this->real+z.real;
+    	temp.img=this->img+z.img;
+    	return temp;
+    }
+    friend complex operator * (complex m, complex n);  // friend function and operator overloading
+    friend ostream &operator << (ostream & out,complex o1); // friend function and operator overloading
+    friend istream &operator >> (istream & in,complex o2);  // friend function and operator overloading
+};
+complex operator *(complex m, complex n){
+	complex temp1;
+	temp1.real=(m.real*n.real)-(m.img*n.img);
+	temp1.img=(m.real*n.img)+(n.real*m.img);
+	return temp1;
+
+}
+
+ostream &operator << (ostream & out,complex o1){
+	out<<o1.real<<"+i"<<o1.img;
+    cout<<"\nExtracted successfully...";
+	return out;
+}
+istream &operator >> (istream & in,complex o2){
+	in>>o2.real>>o2.img;
+    cout<<"Extracted successfully...";
+	return in;
+}
+
+
+
+int main(){
+   complex c;
+   int m,n,s;
+   while(1>0){
+   cout<<"\n1.Addition\n";
+   cout<<"2.Multiplication\n";
+   cout<<"3.Insertion\n";
+   cout<<"4.Extraction\n";
+   cout<<"Select an option:";
+   cin>>s;
+   switch (s){
+   	case 1:{
+	   	cout<<"Enter space seperated real and img part of first numbers:";
+	   	cin>>m>>n;
+	   	complex c1(m,n);
+	   	cout<<"Enter space seperated real and img part of second numbers:";
+		cin>>m>>n;
+		complex c2(m,n);
+		c=c1+c2;
+		c.display();
+        break;}
+    case 2:{
+        cout<<"Enter space seperated real and img part of first numbers:";
+	   	cin>>m>>n;
+	   	complex c3(m,n);
+	   	cout<<"Enter space seperated real and img part of second numbers:";
+		cin>>m>>n;
+		complex c4(m,n);
+		c=c3*c4;
+		c.display();
+		break;}
+	case 3:{
+		// cout<<"Enter space seperated real and img part of first numbers:";
+	   	// cin>>m>>n;
+	   	complex c5;
+		cout<<c5; 
+		break;}
+	case 4:{
+		cout<<"Enter real and img part of first numbers:"<<endl;
+	   	// cin>>m>>n;
+	   	complex c6;
+		cin>>c6;
+		break;}
+   }
+   }
+//    cout<<"Enter first complex numbers: ";
+//    cin>>m>>n;
+//    complex c1(m,n);
+//    cout<<"Enter second complex number: ";
+//    cin>>m>>n;
+//    complex c2(m,n);
+//    c3=c1+c2;
+//    cout<<"Addition is - ";
+//    c3.display();
+//    c3=c1*c2;
+//    cout<<"\nMultipliaction is - ";
+//    c3.display();
+//    cout<<"\nEnter another complex no - ";
+//    complex c(14,25);
+//    cin>>c;
+//    cout<<c;     
+//    return 0;
+}
+
+
+Practical 4
+
+
+Book
+
+
+
+#include <iostream>
+#include<string.h>
+using namespace std;
+
+class publish{  // Base class
+    public:
+    int flag;
+    
+    string title;
+    float price;
+    
+    void getdata1(){    //function
+        X:
+        cout<<"Enter Title - ";
+        cin>>title;
+        for(int i=0;i<title.length();i++){
+            if(isdigit(title[i])==true){
+                flag=0;
+            }
+            else{
+                flag=1;
+            }
+        }
+        try{
+            if(flag==0){
+                throw flag;
+            }
+        }
+        catch(int flag){
+            cout<<"Exception caught...!\n";
+            goto X;
+        }
+        cout<<"Enter Price of book - ";
+        cin>>price;
+    }
+    
+    void display1(){
+        cout<<"Title - "<<title<<"\n";
+        cout<<"Price - "<<price<<"\n";
+    }
+};
+
+class book:public publish{       //  derived class
+    int count;
+    public:
+    void getdata2(){
+        cout<<"Enter Page count- ";
+        cin>>count;
+    }
+    
+    void display2(){
+        cout<<"Page count is - "<<count<<"\n";
+    }
+};
+
+class tape:public publish{    //  derived class
+    public:
+    float tm;
+    void getdata3(){
+        cout<<"Enter play time- ";
+        cin>>tm;
+    }
+    
+    void display3(){
+        cout<<"Play time is - "<<tm<<"\n";
+    }
+};
+int main() {
+    book b;    // object of derived class
+    tape t;    // object of derived class
+    
+    b.getdata1();   // function call of Base class by object of derived class
+    b.display1();   // function call of Base class by object of derived class
+    b.getdata2();   // function call of derived class by object of derived class
+    b.display2();   // function call of derived class by object of derived class
+    
+    // t.getdata1();
+    // t.display1();
+    t.getdata3();   // function call of derived class by object of derived class
+    t.display3();   // function call of derived class by object of derived class
+
+    return 0;
+}
+
+
+Practical 5
+
+
+Int , float
+
+
+#include <iostream>
+using namespace std;
+class sort{     // class defination
+    
+    public:
+    template <class T>void get(int n, T a[]){       // function templateto accept array of elements
+        for (int i = 0 ; i < n ; i++){
+        cout<<"Enter element - ";
+        cin>>a[i];
+    }
+    cout<<"Unsorted array : ";
+    for (int i = 0 ; i < n ; i++){
+        cout<<a[i]<<" , ";
+    } 
+    
+    }
+    
+    template <class T>void select(int n, T a[]){        // function template for selection sort
+        for (int i = 0 ; i < n ; i++){
+        for (int j = i+1 ; j < n ; j++){
+            if(a[i]>a[j]){
+                int temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }
+    }
+    cout<<"\nSorted array : ";
+    for (int i = 0 ; i < n ; i++){
+        cout<<a[i]<<" , ";
+    }
+    cout<<endl;
+    }
+};
+int main() {
+    int ch,m;
+    sort s;  
+    while (true)
+    {
+    cout<<"1. INT type sort\n";
+    cout<<"2. FLOAT type sort\n";
+    cout<<"Enter choice - ";
+    cin>>ch;
+    // object creation
+    // cout<<"1. INT type sort\n";
+    // cout<<"2. FLOAT type sort\n";
+    // cout<<"Enter choice - ";
+    // cin>>ch;
+    
+    switch(ch){
+        
+        case 1: {
+                cout<<"Enter no of elements - ";
+                cin>>m;
+		int arr[m];
+                s.get(m,arr);
+                s.select(m,arr);
+                break;}
+                
+        case 2: {
+                cout<<"Enter no of elements - ";
+                cin>>m;
+		float brr[m];
+                s.get(m,brr);
+                s.select(m,brr);
+                break;}
+    }
+    }
+    return 0;
+}
+
+
+Practical 6 
+
+
+File creation 
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+class student{  //class defination
+	public:
+
+	char name[10],div;
+   	int roll;
+   	
+	void get(){ //function defination
+	cout<<"Enter name - ";
+  	cin>>name;
+  	cout<<"Enter Div - ";
+  	cin>>div;
+  	cout<<"Enter Roll no - ";
+  	cin>>roll;
+
+	}
+	
+};
+
+int main () {
+  int n;
+  cout<<"Enter no of students - ";    // accept no of students
+  cin>>n;
+  student s[n];   // array of object of class
+  fstream file;   // object of fstream class
+  file.open("abc.txt",ios::out);    // open file in writting mode
+  for(int i=0; i<n ; i++){
+    s[i].get();
+    
+    file<<"Name - "<<s[i].name<<endl;
+    file<<"Div - "<<s[i].div<<endl;
+    file<<"Roll no - "<<s[i].roll<<endl;
+  }
+  file.close();   // close file
+  file.open("abc.txt",ios::in);   // open file in write mode
+  while(!file.eof())    // print content of file till end of file 
+    {
+        char ch;
+        file>>ch;
+        cout<<ch;
+    }
+   file.close();    // file close
+  
+}
+
+
+Practical 7
+
+
+STL 
+
+
+#include <iostream> 
+#include <string>
+#include <algorithm> //The STL algorithms are generic because they can operate on a variety of data structures
+#include <vector> //The header file for the STL vector library is vector.
+using namespace std;
+class Item // creating class Item
+{
+ public:
+ char name[10];
+ string quantity;
+ long tele;
+ bool operator==(const Item& i1) //Boolean operators allow you to create more complex conditional statements
+ {
+ if(tele==i1.tele) //operator will return 1 if the comparison is true, or 0 if the comparison is false
+ return 1;
+ return 0;
+ }
+ bool operator<(const Item& i1)
+ {
+ if(tele<i1.tele) //operator will return 1 if the comparison is true, or 0 if the comparison is false
+ return 1;
+ return 0;
+ }
+};
+vector<Item> o1;
+void print(Item &i1);
+void display();
+void insert();
+void search();
+void dlt();
+bool compare(const Item &i1, const Item &i2)
+{
+ return i1.tele < i2.tele;
+}
+int main()
+{
+ int ch;
+ do
+ {
+ cout<<"\n* * * * * Menu * * * * *";
+ cout<<"\n1.Insert";
+ cout<<"\n2.Display";
+ cout<<"\n3.Search";
+ cout<<"\n4.Sort";
+ cout<<"\n5.Delete";
+ cout<<"\n6.Exit";
+ cout<<"\nEnter your choice : ";
+ cin>>ch;
+
+ switch(ch)
+ {
+ case 1:
+ insert();
+ break;
+
+ case 2:
+ display();
+ break;
+
+ case 3:
+ search();
+ break;
+
+ case 4:
+ sort(o1.begin(),o1.end(),compare);
+ cout<<"\n\n Sorted on Telephone  : ";
+ display();
+ break;
+
+ case 5:
+ dlt();
+ break;
+
+ case 6:
+ exit(0);
+ }
+ 
+ }while(ch!=7);
+ return 0;
+}
+void insert()
+{
+ Item i1;
+ cout<<"Enter Name : ";
+ cin>>i1.name;
+ cout<<"Enter DOB : ";
+ cin>>i1.quantity;
+ cout<<"Enter Telephone : ";
+ cin>>i1.tele;
+ o1.push_back(i1);
+}
+void display()
+{
+ for_each(o1.begin(),o1.end(),print);
+}
+void print(Item &i1)
+{
+ cout<<"\n";
+ cout<<"\nName : "<<i1.name;
+ cout<<"\nDOB : "<<i1.quantity;
+ cout<<"\nTelephone : "<<i1.tele;
+ cout<<"\n\n";
+}
+void search()
+{
+ vector<Item>::iterator p;
+ Item i1;
+ cout<<"\nEnter Telephone to search : ";
+ cin>>i1.tele;
+ p=find(o1.begin(),o1.end(),i1);
+ if(p==o1.end())
+ {
+ cout<<"\nNot found!!!";
+ }
+ else
+ {
+ cout<<"\nFound!!!";
+ }
+}
+void dlt()
+{
+ vector<Item>::iterator p;
+ Item i1;
+ cout<<"\nEnter Telephone to delete : ";
+ cin>>i1.tele;
+ p=find(o1.begin(),o1.end(),i1);
+ if(p==o1.end())
+ {
+ cout<<"\nNot found!!!";
+ }
+ else
+ {
+ o1.erase(p);
+ cout<<"\nDeleted!!!";
+ }
+}
+
+
+
+Practical 8 
+
+
+Map
+
+
+#include <iostream>
+#include <map>      // include header file of map
+#include<string>
+using namespace std;
+int main() {
+    string st;
+    typedef map <string,int> type;
+    type pop;
+    type::iterator p;
+   
+    pop.insert(pair<string,int>("maharshtra",130000000));
+    pop.insert(pair<string,int>("gujrat",220000000));
+    pop.insert(pair<string,int>("karnataka",99000000));
+    pop.insert(pair<string,int>("punjab",12000000));
+    pop.insert(pair<string,int>("adam",23000000));
+    
+    cout<<"Enter state name - ";
+    cin>>st;
+    
+    p=pop.find(st);
+    if(p!=pop.end()){
+        cout<<p->second;
+    }
+    else{
+        cout<<"Not found...!!!";
+    }
+    
+
+    return 0;
+}
+
+
+
+
+
+CGL
+
+
+
+
+Practical - 1
+
+
+DDA
+
+
+//Line drawing Algorithm
+	#include<graphics.h>
+    
+   
+	int main()  
+	{  
+        		int gd = DETECT ,gm, i;  
+        		float x, y,dx,dy,steps,xin,yin;  
+        		int x0, x1, y0, y1;  
+        		initgraph(&gd, &gm, NULL);  
+        		setbkcolor(WHITE);  
+       	         	x0 = 100 , y0 = 200, x1 = 500, y1 = 300;  
+        		dx = (float)(x1 - x0);  
+        		dy = (float)(y1 - y0);  
+        		if(dx>=dy)  
+               	{  
+                		steps = dx;  
+        		}  
+        		else  
+               	{  
+                		steps = dy;  
+        		}  
+        		xin = dx/steps;  
+        		yin = dy/steps;  
+        		x = x0;  
+        		y = y0;  
+
+        		for(i=1;i<=steps;i++)
+        		{
+                		putpixel(x, y, RED);  
+                		x =x + xin;  
+                		y =y + yin;
+        		}
+
+       	         	getch();  
+        		closegraph();  
+	}
+
+
+
+Gcc dda.cpp -o dda -lgraph
+./dda
+    
+
+
+
+
+PRACTICAL 2
+
+
+BRESENHAM LINE
+
+
+// Cpp-program for circle drawing using Bresenham’s Algorithm in computer-graphics
+
+#include <graphics.h>
+
+// Function to put pixels at subsequence points
+void drawCircle(int xc, int yc, int x, int y)
+{
+	putpixel(xc+x, yc+y, RED);
+	putpixel(xc-x, yc+y, RED);
+	putpixel(xc+x, yc-y, RED);
+	putpixel(xc-x, yc-y, RED);
+	putpixel(xc+y, yc+x, RED);
+	putpixel(xc-y, yc+x, RED);
+	putpixel(xc+y, yc-x, RED);
+	putpixel(xc-y, yc-x, RED);
+}
+
+// Function for circle-generation using Bresenham's algorithm
+void circleBres(int xc, int yc, int r)
+{
+	int x = 0, y = r;
+	int d = 3 - 2 * r;
+	drawCircle(xc, yc, x, y);
+	while (y >= x)
+	{
+    						// for each pixel we will
+    						// draw all eight pixels
+   	 
+    		x++;
+    						// check for decision parameter
+    						// and correspondingly
+    						// update d, x, y
+    		if (d > 0)
+    		{
+        			y--;
+        			d = d + 4 * (x - y) + 10;
+    		}
+    		else
+        			d = d + 4 * x + 6;
+    		drawCircle(xc, yc, x, y);
+    		delay(50);
+	}
+}
+
+
+// Driver code
+int main()
+{
+	int xc = 50, yc = 50, r = 30;
+	int gd = DETECT, gm;
+	initgraph(&gd, &gm, NULL);  // initialize graph
+	circleBres(xc, yc, r);	// function call
+	delay(50000);
+	return 0;
+}
+
+
+Gcc brcircle.cpp -o brcircle -lgraph
+./brcircle
+
+
+
+
+PRACTICAL 3
+
+
+DDA AND BRESENHAM
+
+
+//Program 3 To draw Pattern by using DDA Line drawing & Bresenham circle drawing algorithm
+#include<graphics.h>
+void drawCircle(int xc, int yc, int x, int y)
+{
+ 	putpixel(xc+x, yc+y, WHITE);
+    	putpixel(xc-x, yc+y, WHITE);
+    	putpixel(xc+x, yc-y, WHITE);
+    	putpixel(xc-x, yc-y, WHITE);
+    	putpixel(xc+y, yc+x, WHITE);
+    	putpixel(xc-y, yc+x, WHITE);
+    	putpixel(xc+y, yc-x, WHITE);
+    	putpixel(xc-y, yc-x, WHITE);
+}
+
+
+void circleBres(int xc, int yc, int r) //Bresenham's circle drawing algorithm
+{
+    	int x = 0, y = r;
+    	int d = 3 - 2 * r;
+    	drawCircle(xc, yc, x, y);
+    	while (y >= x)
+    	{
+   		 x++;
+ 		if (d > 0)
+   		 {
+   			 y--;
+   			 d = d + 4 * (x - y) + 10;
+   		 }
+   		 else
+   			 d = d + 4 * x + 6;
+   		 drawCircle(xc, yc, x, y);
+   		 delay(10);
+    	}
+}
+void dda(int x0,int y0,int x1,int y1)  //DDA line drawing algorithm
+{
+    	int i;  
+    	float x, y,dx,dy,steps,xin,yin; 	 
+    	dx = (float)(x1 - x0);  
+    	dy = (float)(y1 - y0);  
+    	if(dx>=dy)  
+    	{  
+        		steps = dx;  
+    	}  
+    	else  
+    	{  
+        		steps = dy;  
+    	}  
+    	xin = dx/steps;  
+    	yin = dy/steps;  
+    	x = x0;  
+    	y = y0;  
+	for(int i=1; i<=steps;i++)
+    	{  
+        		putpixel(x, y, WHITE);  
+        		x =x + xin;  
+        		y =y + yin;  
+        	}  
+}
+
+int main()
+{
+    	int xc = 100, yc = 70, r = 30;   	//Inner circle
+    	int xc1 = 100, yc1 = 70, r1 = 60;   	// Outer circle
+    	int x1 = 50 , y1 = 100, x2 = 150, y2 = 100,x3= 100, y3=10; // 3 points to draw three lines
+ 	int gd = DETECT, gm;
+    	initgraph(&gd, &gm, NULL);  
+    	circleBres(xc, yc, r);   		//Function call for Inner Circle
+    	circleBres(xc1, yc1, r1);	 //Function call for Outer Circle
+   	 dda(x1,y1,x2,y2);     		 //Function call for line1
+    	dda(x1,y1,x3,y3);     	 	//Function call for line2
+    	dda(x3,y3,x2,y2);     		 //Function call for line3
+    	delay(50000);
+    	return 0;
+}
+
+
+
+gcc p3.cpp -o p3 -lgraph
+./p3
+
+
+
+
+
+PRACTICAL 4
+
+
+SCAN LINE
+
+
+//Scan Line fill Algorithm
+#include <graphics.h>
+
+// Function to implement scan-line polygon filling
+void scanFill(int x[], int y[], int edges)
+{
+	int i, j, temp;
+	int ymax = 300, ymin = 100;
+
+	
+	// Scan each scan-line within the polygon's vertical extent
+	for (i = ymin; i <= ymax; i++)
+	{
+        		// Initialize an array to store the intersection points
+        		int interPoints[edges], count = 0;
+        		for (j = 0; j < edges; j++)
+        		{
+                		int next = (j + 1) % edges;
+
+                		// Check if the current edge intersects with the scan line
+                		if ((y[j] > i && y[next] <= i) || (y[next] > i && y[j] <= i))
+                		{
+                    			interPoints[count++] = x[j] + (i - y[j]) * (x[next] - x[j]) / (y[next] - y[j]);
+                		}
+        		}
+
+        		// Sort the intersection points in ascending order
+        		for (j = 0; j < count - 1; j++)
+        		{
+                		for (int k = 0; k < count - j - 1; k++)
+                		{
+                    			if (interPoints[k] > interPoints[k + 1])
+                    			{
+                            			temp = interPoints[k];
+                            			interPoints[k] = interPoints[k + 1];
+                            			interPoints[k + 1] = temp;
+                    			}
+                		}
+        		}
+
+        		// Fill the pixels between pairs of intersection points
+        		for (j = 0; j < count; j += 2)
+        		{
+                		line(interPoints[j], i, interPoints[j + 1], i);
+        		}
+	}
+}
+
+int main()
+{
+	int gd = DETECT, gm;
+	initgraph(&gd, &gm, NULL);
+	int x[] = {100, 200, 300};
+	int y[] = {100, 300, 200};
+	int edges = 3;
+	scanFill(x, y, edges);
+	delay(5000);
+	closegraph();
+	return 0;
+}
+
+
+
+Gcc scan.cpp -o scan -lgraph
+./scan
+
+
+
+
+
+PRACTICAL 5
+
+
+2D
+
+
+//2D Transformation
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+int main()
+{
+	int gd=DETECT,gm,s;
+	initgraph(&gd,&gm,NULL);
+	cout<<"MENU\n1.Translation\n2.Rotation\n3.Scaling\n"<<endl;
+	cout<<"Enter your choice:";
+	cin>>s;
+	switch(s)
+	{
+    	case 1:
+    	{   
+           		int x1=200,y1=150,x2=300,y2=250;          	//Translation
+            	int tx=50,ty=50;
+            	cout<<"Rectangle before translation"<<endl;
+            	setcolor(CYAN);
+            	rectangle(x1,y1,x2,y2);
+            	setcolor(GREEN);
+            	cout<<"Rectangle after translation"<<endl;
+            	rectangle(x1+tx,y1+ty,x2+tx,y2+ty);
+            	getch();
+            	break;
+     	}
+    	case 2:
+    	{
+         		int x1 = 200, y1 = 200;  // Top-left corner (pivot point)
+            	int x2 = 300, y2 = 200;  // Top-right corner
+            	int x3 = 300, y3 = 300;  // Bottom-right corner
+            	int x4 = 200, y4 = 300;  // Bottom-left corner
+            	double angle;
+       	            cout << "Rectangle before rotation" << endl;
+            	setcolor(CYAN);
+            	rectangle(x1, y1, x3, y3);
+            	cout << "Angle of rotation (in degrees): ";
+            	cin >> angle;
+
+            	// Convert the angle to radians
+            	double radian = (angle * 3.14159265) / 180.0;
+
+            	// Function to rotate a point around the pivot point (x1, y1)
+
+            	auto rotatePoint = [&](int &x, int &y)
+            	{
+                	int x_new = x1 + (x - x1) * cos(radian) - (y - y1) * sin(radian);//calculating new coordinates
+                	int y_new = y1 + (x - x1) * sin(radian) + (y - y1) * cos(radian);
+                	x = x_new;                			 //Updating the Point's Coordinates
+                	y = y_new;
+            	};
+
+            	// Rotate all four corners around the pivot point
+            	rotatePoint(x2, y2); // Top-right corner
+            	rotatePoint(x3, y3); // Bottom-right corner
+            	rotatePoint(x4, y4); // Bottom-left corner
+
+            	// Draw the rotated rectangle using the rotated points
+            	setcolor(GREEN);
+            	line(x1, y1, x2, y2);  // Top edge
+            	line(x2, y2, x3, y3);  // Right edge
+            	line(x3, y3, x4, y4);  // Bottom edge
+            	line(x4, y4, x1, y1);  // Left edge
+            	getch();
+            	break;
+    	}
+    	case 3:
+    	{
+            	int x1=30,y1=30,x2=70,y2=70,sy=2,sx=2;       	//Scaling
+            	cout<<"Before scaling"<<endl;
+            	setcolor(CYAN);
+            	rectangle(x1,y1,x2,y2);
+            	cout<<"After scaling"<<endl;
+            	setcolor(GREEN);
+            	rectangle(x1*sx,y1*sy,x2*sx,y2*sy);
+            	getch();
+            	break;
+     	}
+   	default:
+      	{
+        		cout<<"Invalid Selection"<<endl;        	//Invalid Choice
+        		break;
+      	}
+
+    }
+   closegraph();
+    return 0;
+}
+
+
+
+
+g++ transform4.cpp -o transform4 -lgraph
+./transform4
+
+
+
+
+PRACTICAL 6
+
+
+//Cohen Sutherland Algorithm
+#include <iostream>
+#include <graphics.h>
+using namespace std;
+
+class Coordinate
+{
+	public:
+        	int x, y;
+        	char code[4] = {'0', '0', '0', '0'};         	// Default all bits to '0'
+};
+
+class Lineclip
+{
+	public:
+        	void drawWindow();
+        	void drawLine(Coordinate p1, Coordinate p2);
+        	Coordinate setCode(Coordinate p);
+        	int visibility(Coordinate p1, Coordinate p2);
+        	Coordinate clipEndpoint(Coordinate p1, Coordinate p2);
+};
+
+int main()
+{
+        	Lineclip lc;
+        	int gd = DETECT, gm;
+        	Coordinate p1, p2;
+
+        	cout << "Enter x1, y1: ";
+        	cin >> p1.x >> p1.y;
+        	cout << "Enter x2, y2: ";
+        	cin >> p2.x >> p2.y;
+
+        	initgraph(&gd, &gm, NULL);
+
+        	lc.drawWindow();     	// Draw clipping window
+        	lc.drawLine(p1, p2);     	// Draw initial line
+        	delay(2000);
+        	cleardevice();
+
+        	p1 = lc.setCode(p1);         	// Set codes for endpoints
+        	p2 = lc.setCode(p2);
+
+        	int vis = lc.visibility(p1, p2);
+
+        	if (vis == 0)
+        	{                 	// if vis = 0  Line Fully visible
+            	lc.drawWindow();
+            	lc.drawLine(p1, p2);
+        	}
+        	else if (vis == 2)
+        	{                 	// if vis = 2 Line Partially visible
+            	p1 = lc.clipEndpoint(p1, p2);
+            	p2 = lc.clipEndpoint(p2, p1);
+            	lc.drawWindow();
+            	lc.drawLine(p1, p2);
+        	}
+        	else
+        	{             	// if vis = 1 Line Fully invisible
+            	lc.drawWindow();
+        	}
+
+        	delay(2000);
+        	closegraph();
+        	return 0;
+}
+
+void Lineclip::drawWindow()
+{
+        	rectangle(150, 100, 450, 350);     	// Draw rectangular clipping window
+}
+
+void Lineclip::drawLine(Coordinate p1, Coordinate p2)
+{
+        	line(p1.x, p1.y, p2.x, p2.y);     	// Draw line between points
+}
+
+Coordinate Lineclip::setCode(Coordinate p)
+{
+        	if (p.y < 100) p.code[0] = '1';     	// Above top
+        	if (p.y > 350) p.code[1] = '1';     	// Below bottom
+        	if (p.x > 450) p.code[2] = '1';     	// Right of window
+        	if (p.x < 150) p.code[3] = '1';     	// Left of window
+        	return p;
+}
+
+int Lineclip::visibility(Coordinate p1, Coordinate p2)
+{
+        	bool allZero = true, anyOverlap = false;
+
+        	for (int i = 0; i < 4; i++)
+        	{
+            	if (p1.code[i] == '1' && p2.code[i] == '1')
+                	return 1;         	// Fully invisible
+            	if (p1.code[i] == '1' || p2.code[i] == '1')
+                	anyOverlap = true;
+        	}
+
+        	return anyOverlap ? 2 : 0;// 2 = Partial, 0 = Fully visible,ternary (conditional)operator used
+}
+
+Coordinate Lineclip::clipEndpoint(Coordinate p1, Coordinate p2)
+{
+        	float m = (float)(p2.y - p1.y) / (p2.x - p1.x); // Slope of the line
+
+        	if (p1.code[3] == '1')
+        	{                     	// Left
+            	p1.y += m * (150 - p1.x);
+            	p1.x = 150;
+        	}
+        	else if (p1.code[2] == '1')
+        	{                     	// Right
+            	p1.y += m * (450 - p1.x);
+            	p1.x = 450;
+        	}
+        	else if (p1.code[0] == '1')
+        	{                     	// Top
+            	p1.x += (100 - p1.y) / m;
+            	p1.y = 100;
+        	}
+        	else if (p1.code[1] == '1')
+        	{                     	// Bottom
+            	p1.x += (350 - p1.y) / m;
+            	p1.y = 350;
+        	}
+        	return p1;
+}
+
+
+
+
+g++ cohen1.cpp -o cohen1 -lgraph
+./cohen1
+
+
+
+
+
+
+Practical 7 
+
+Open gl
+
+
+
+#include <GL/glut.h>
+#include <cmath>
+
+// Global variables
+float sunX = -0.75;    		// Initial sun position
+float sunSpeed = 0.01; 	// Speed of sun movement
+bool inSunrise = true;  	// Flag to determine if in sunrise phase
+
+// Define colors as float arrays
+float skyColor[] = {0.0, 0.5, 1.0};   		// Light blue sky
+float sunriseColor[] = {1.0, 1.0, 0.0};   	// Yellow for sunrise
+float sunsetColor[] = {1.0, 0.5, 0.0};		// Orange for sunset
+
+void drawSky() 
+{
+	glColor3fv(skyColor);  // Use the color array for the sky
+	glBegin(GL_QUADS);
+    		glVertex2f(-1.0, -1.0);
+    		glVertex2f(1.0, -1.0);
+    		glVertex2f(1.0, 1.0);
+    		glVertex2f(-1.0, 1.0);
+	glEnd();
+}
+
+void drawSun() {
+	glColor3fv(inSunrise ? sunriseColor : sunsetColor);  // Use color based on sunrise or sunset
+	glBegin(GL_TRIANGLE_FAN);
+    		glVertex2f(sunX, 0.0);  // Center of the sun
+    		float radius = 0.1;
+    		for (int i = 0; i <= 360; i += 10)
+		{
+        			float angle = i * M_PI / 180.0;
+        			glVertex2f(sunX + radius * cos(angle), radius * sin(angle));
+    		}
+	glEnd();
+}
+
+void display() 
+{
+	drawSky();
+	drawSun();
+	glFlush();
+}
+
+void update(int value)
+ {
+	sunX += sunSpeed;  // Update sun position
+	if (inSunrise && sunX >= 0.75) 
+	{
+    		inSunrise = false;  		// Switch to sunset
+	} 
+	glutPostRedisplay();  // Request redraw
+	glutTimerFunc(30, update, 0);  	// Continue animation
+}
+
+int main(int argc, char **argv) 
+{
+	glutInit(&argc, argv);                      	// Initialize the GLUT library
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);	// Set display mode to single buffer and RGB colors
+	glutInitWindowSize(500, 500);               	// Set window size
+	glutCreateWindow("Sunrise and Sunset Animation"); // Create window
+	glutDisplayFunc(display);                   	// Register display callback function
+	glutTimerFunc(30, update, 0);               	// Start animation timer
+	glutMainLoop();                             	// Enter the GLUT event processing loop
+	return 0;
+}
+
+
+
+
+g++ -o opengl1 opengl1.cpp -lGL -lGLU -glut
+./opengl1
+
+
+
+
+
+PRACTICAL 8
+
+
+//koch curve
+#include <iostream>
+#include <math.h>
+#include <graphics.h>
+using namespace std;
+class kochCurve
+{
+	public:
+		void koch(int it,int x1,int y1,int x5,int y5)
+		{
+			int x2,y2,x3,y3,x4,y4;
+			int dx,dy;
+			if (it==0)
+			{
+				line(x1,y1,x5,y5);
+			}
+			else
+			{
+				delay(10);
+				dx=(x5-x1)/3;
+				dy=(y5-y1)/3;
+				x2=x1+dx;
+				y2=y1+dy;
+				x3=(int)(0.5*(x1+x5)+sqrt(3)*(y1-y5)/6);
+				y3=(int)(0.5*(y1+y5)+sqrt(3)*(x5-x1)/6);
+				x4=2*dx+x1;
+				y4=2*dy+y1;
+				koch(it-1,x1,y1,x2,y2);
+				koch(it-1,x2,y2,x3,y3);
+				koch(it-1,x3,y3,x4,y4);
+				koch(it-1,x4,y4,x5,y5);
+			}
+	}
+};
+
+int main()
+{
+	kochCurve k;
+	int it;
+	cout<<"Enter Number Of Iterations : "<<endl;
+	cin>>it;
+	int gd=DETECT,gm;
+	initgraph(&gd,&gm,NULL);
+	k.koch(it,150,20,20,280);
+	k.koch(it,280,280,150,20);
+	k.koch(it,20,280,280,280);
+	getch();
+	closegraph();
+	return 0;
+}
+
+
+
+g++ koch.cpp -o koch -lgraph
+./koch
+
+
+
+
+
+
+
+PRACTICAL 9
+
+
+//Tic Tac Toe Game
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Set up the game board as an array
+vector<string> board = {"-", "-", "-", "-", "-", "-", "-", "-", "-"};
+
+// Define a function to print the game board
+void printBoard() 
+{
+   	cout << board[0] << " | " << board[1] << " | " << board[2] << endl;
+    	cout << board[3] << " | " << board[4] << " | " << board[5] << endl;
+    	cout << board[6] << " | " << board[7] << " | " << board[8] << endl;
+}
+
+// Define a function to handle a player's turn
+void takeTurn(string player) 
+{
+    cout << player << "'s turn." << endl;
+    cout << "Choose a position from 1-9: ";
+    int position;
+    cin >> position;
+    position -= 1;
+    while (position < 0 || position > 8 || board[position] != "-") 
+    {
+        	cout << "Invalid input or position already taken. Choose a different position: ";
+        	cin >> position;
+        	position -= 1;
+    }
+    board[position] = player;
+    printBoard();
+}
+
+// Define a function to check if the game is over
+string checkGameOver() 
+{
+    // Check for a win
+    if ((board[0] == board[1] && board[1] == board[2] && board[0] != "-") ||
+        (board[3] == board[4] && board[4] == board[5] && board[3] != "-") ||
+        (board[6] == board[7] && board[7] == board[8] && board[6] != "-") ||
+        (board[0] == board[3] && board[3] == board[6] && board[0] != "-") ||
+        (board[1] == board[4] && board[4] == board[7] && board[1] != "-") ||
+        (board[2] == board[5] && board[5] == board[8] && board[2] != "-") ||
+        (board[0] == board[4] && board[4] == board[8] && board[0] != "-") ||
+        (board[2] == board[4] && board[4] == board[6] && board[2] != "-")) 
+        {
+        		return "win";
+        }
+    // Check for a tie
+    else if (count(board.begin(), board.end(), "-") == 0) 
+    {
+        		return "tie";
+    }
+    // Game is not over
+    else 
+    {
+        		return "play";
+    }
+}
+
+// Define the main game loop
+int main() 
+{
+    	printBoard();
+    	string currentPlayer = "X";
+    	bool gameOver = false;
+    	while (!gameOver) 
+    	{
+        		takeTurn(currentPlayer);
+        		string gameResult = checkGameOver();
+        		if (gameResult == "win") 
+        		{
+            		cout << currentPlayer << " wins!" << endl;
+            		gameOver = true;
+        		} 
+        		else if (gameResult == "tie") 
+        		{
+            		cout << "It's a tie!" << endl;
+            		gameOver = true;
+        		} 
+        		else 
+        		{
+            		// Switch to the other player
+            		currentPlayer = currentPlayer == "X" ? "O" : "X";
+        		}
+    	}
+    	return 0;
+}
+
+
+
+
+g++ tic.cpp -o tic -lgraph
+./tic
